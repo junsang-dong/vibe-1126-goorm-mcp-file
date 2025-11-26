@@ -1,0 +1,105 @@
+.api-key-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 300px;
+}
+
+.api-key-input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.api-key-input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.9rem;
+  font-family: 'Monaco', 'Courier New', monospace;
+  min-width: 200px;
+  transition: all 0.2s;
+}
+
+.api-key-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.api-key-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.api-key-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.api-key-validate-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.api-key-validate-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.api-key-validate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.validation-message {
+  font-size: 0.85rem;
+  padding: 0.25rem 0;
+  font-weight: 500;
+}
+
+.validation-message.valid {
+  color: #4ade80;
+}
+
+.validation-message.invalid {
+  color: #f87171;
+}
+
+.api-key-hint {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 1200px) {
+  .api-key-input-container {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .api-key-input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .api-key-input {
+    width: 100%;
+  }
+  
+  .api-key-validate-btn {
+    width: 100%;
+  }
+}
+
