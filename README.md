@@ -137,26 +137,112 @@ npm run dev
 
 ### Vercel 배포 (프론트엔드)
 
-1. Vercel에 프로젝트 연결
-2. 빌드 설정:
-   - Root Directory: `frontend`
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-3. 환경변수 설정 (필요시)
+#### 방법 1: Vercel CLI 사용
+
+1. Vercel CLI 설치:
+```bash
+npm i -g vercel
+```
+
+2. Vercel 로그인:
+```bash
+vercel login
+```
+
+3. 프론트엔드 디렉토리에서 배포:
+```bash
+cd frontend
+vercel
+```
+
+4. 배포 설정:
+   - **Root Directory**: `frontend` (또는 프로젝트 루트에서 `frontend` 지정)
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+
+#### 방법 2: Vercel 웹 대시보드 사용
+
+1. [Vercel](https://vercel.com)에 로그인
+2. "Add New Project" 클릭
+3. GitHub 리포지토리 연결: `junsang-dong/vibe-1126-goorm-mcp-file`
+4. 프로젝트 설정:
+   - **Framework Preset**: Vite
+   - **Root Directory**: `frontend` (또는 프로젝트 루트에서 `./frontend` 지정)
+   - **Build Command**: `cd frontend && npm run build`
+   - **Output Directory**: `frontend/dist`
+   - **Install Command**: `cd frontend && npm install`
+5. 환경변수 설정 (필요시)
+6. "Deploy" 클릭
+
+#### 프론트엔드 API 프록시 설정
+
+프론트엔드에서 백엔드 API를 호출하려면 `vite.config.js`의 proxy 설정이 프로덕션에서는 작동하지 않습니다. 
+
+**옵션 1**: Vercel의 rewrites 사용 (vercel.json 참고)
+```json
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://your-backend-url.railway.app/api/$1"
+    }
+  ]
+}
+```
+
+**옵션 2**: 환경변수로 백엔드 URL 설정
+```javascript
+// frontend/src/api.js
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
+```
+
+Vercel 환경변수에 `VITE_API_URL`을 백엔드 URL로 설정합니다.
 
 ### 백엔드 배포
 
 백엔드는 Node.js 환경이 필요합니다. 다음 플랫폼을 고려하세요:
-- Railway
-- Render
-- Heroku
-- AWS EC2
-- Google Cloud Run
+
+#### Railway 배포 (권장)
+
+1. [Railway](https://railway.app)에 로그인
+2. "New Project" → "Deploy from GitHub repo" 선택
+3. 리포지토리 선택: `junsang-dong/vibe-1126-goorm-mcp-file`
+4. 서비스 설정:
+   - **Root Directory**: `backend`
+   - **Start Command**: `npm start`
+5. 환경변수 설정:
+   - `OPENAI_API_KEY`: (선택사항, 클라이언트에서 제공)
+   - `MCP_COMMAND`: `npx`
+   - `MCP_ARGS`: `-y @modelcontextprotocol/server-filesystem`
+   - `MCP_ALLOWED_DIRECTORY`: `/Users/junsangdong/Desktop` (또는 원하는 경로)
+   - `PORT`: Railway가 자동 할당 (또는 `3001`)
+6. 배포 완료 후 생성된 URL을 프론트엔드의 API URL로 설정
+
+#### Render 배포
+
+1. [Render](https://render.com)에 로그인
+2. "New" → "Web Service" 선택
+3. GitHub 리포지토리 연결
+4. 서비스 설정:
+   - **Name**: `mcp-file-assistant-backend`
+   - **Root Directory**: `backend`
+   - **Environment**: `Node`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+5. 환경변수 설정 (Railway와 동일)
+6. 배포
+
+#### 기타 플랫폼
+- **Heroku**: Heroku CLI 사용
+- **AWS EC2**: EC2 인스턴스에 직접 배포
+- **Google Cloud Run**: 컨테이너로 배포
 
 배포 시 다음 환경변수를 설정하세요:
-- `OPENAI_API_KEY`
+- `OPENAI_API_KEY` (선택사항)
 - `MCP_COMMAND`
 - `MCP_ARGS`
+- `MCP_ALLOWED_DIRECTORY`
 - `PORT`
 
 ## 🔒 보안 주의사항
